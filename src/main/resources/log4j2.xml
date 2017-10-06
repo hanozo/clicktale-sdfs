@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+    <Properties>
+        <Property name="myAppFullName">simple-dfs</Property>
+    </Properties>
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%p] %c - %m%n"/>
+        </Console>
+        <RollingFile name="rollingFile" fileName="logs/${sys:myAppFullName}.log"
+                                 filePattern="logs/${sys:myAppFullName}-%d{MM-dd-yyyy}-%i.log.gz"
+                                 immediateFlush="false">
+            <PatternLayout>
+                <pattern>%d %p %c [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <AsyncRoot level="info" includeLocation="true">
+            <AppenderRef ref="rollingFile" level="trace"/>
+            <AppenderRef ref="stdout" level="info"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,26 @@
+{
+  "namespace": "mq.avro",
+  "type": "record",
+  "name": "MessageEnvelope",
+  "fields": [
+    {
+      "name": "InnerSchema",
+      "type": {
+        "type": "enum",
+        "name": "Commands",
+        "symbols": [
+          "CreateFileCommand",
+          "RemoveFileCommand",
+          "UpdateFileCommand",
+          "MakeDirCommand",
+          "RemoveDirCommand",
+          "RenameDirCommand"
+        ]
+      }
+    },
+    {
+      "name": "payload",
+      "type": "bytes"
+    }
+  ]
+}

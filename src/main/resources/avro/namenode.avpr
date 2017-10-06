@@ -1,0 +1,49 @@
+{
+  "namespace": "avro.namenode",
+  "protocol": "NameNodeRPC",
+  "doc": "NameNode Protocol",
+  "types": [
+    {
+      "type": "record",
+      "name": "DataNodeInfo",
+      "fields": [
+        {
+          "name": "address",
+          "type": "string"
+        },
+        {
+          "name": "port",
+          "type": "int"
+        },
+        {
+          "name": "diskUsage",
+          "type": "long"
+        }
+      ]
+    }
+  ],
+  "messages": {
+    "askForNodes": {
+      "doc": "Query name node for the corresponding data nodes (2 nodes in our case) to carry our command.",
+      "request": [
+        {
+          "name": "path",
+          "type": "string"
+        }
+      ],
+      "response": {
+        "type": "array",
+        "items": "DataNodeInfo"
+      }
+    },
+    "advertise": {
+      "request": [
+        {
+          "name": "node",
+          "type": "DataNodeInfo"
+        }
+      ],
+      "response": "null"
+    }
+  }
+}
