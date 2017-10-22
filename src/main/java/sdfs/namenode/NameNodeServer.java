@@ -40,10 +40,10 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
     /**
      * Reserve a path entry to avoid race conditions.
      *
-     * @param path
+     * @param path The target path/file
      * @return If the path already exist returning the corresponding nodes for that path.
      * Otherwise two less utilized nodes are served.
-     * @throws AvroRemoteException
+     * @throws AvroRemoteException Any unhandled exception wrapped in AvroRemoteException
      */
     @Override
     public List<DataNodeInfo> askForNodes(CharSequence path) throws AvroRemoteException {
@@ -58,9 +58,9 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
     /**
      * Disk usage advertisement.
      *
-     * @param node
-     * @return
-     * @throws AvroRemoteException
+     * @param node The dataNode which advertises its disk usage
+     * @return null is enforced by auto-gen protocol code
+     * @throws AvroRemoteException Any unhandled exception wrapped in AvroRemoteException
      */
     @Override
     public Void advertise(DataNodeInfo node) throws AvroRemoteException {
@@ -127,7 +127,7 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
 
     private synchronized void syncGroup() throws KeeperException, InterruptedException, TimeoutException, IOException {
 
-        List<DataNodeInfo> nodes = new CopyOnWriteArrayList<>();
+        List<DataNodeInfo> nodes = new ArrayList<>();
 
         for (String znode : zk.getChildren(GROUP_PATH, this)) {
 
