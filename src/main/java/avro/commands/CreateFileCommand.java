@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -560756587307310977L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CreateFileCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"file\",\"type\":\"string\"},{\"name\":\"content\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CreateFileCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,8 +51,8 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence file;
-  @Deprecated public java.lang.CharSequence content;
+  @Deprecated public java.lang.String file;
+  @Deprecated public java.lang.String content;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -66,7 +66,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * @param file The new value for file
    * @param content The new value for content
    */
-  public CreateFileCommand(java.lang.CharSequence file, java.lang.CharSequence content) {
+  public CreateFileCommand(java.lang.String file, java.lang.String content) {
     this.file = file;
     this.content = content;
   }
@@ -85,8 +85,8 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: file = (java.lang.CharSequence)value$; break;
-    case 1: content = (java.lang.CharSequence)value$; break;
+    case 0: file = (java.lang.String)value$; break;
+    case 1: content = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -95,7 +95,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'file' field.
    * @return The value of the 'file' field.
    */
-  public java.lang.CharSequence getFile() {
+  public java.lang.String getFile() {
     return file;
   }
 
@@ -103,7 +103,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'file' field.
    * @param value the value to set.
    */
-  public void setFile(java.lang.CharSequence value) {
+  public void setFile(java.lang.String value) {
     this.file = value;
   }
 
@@ -111,7 +111,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'content' field.
    * @return The value of the 'content' field.
    */
-  public java.lang.CharSequence getContent() {
+  public java.lang.String getContent() {
     return content;
   }
 
@@ -119,7 +119,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'content' field.
    * @param value the value to set.
    */
-  public void setContent(java.lang.CharSequence value) {
+  public void setContent(java.lang.String value) {
     this.content = value;
   }
 
@@ -155,8 +155,8 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CreateFileCommand>
     implements org.apache.avro.data.RecordBuilder<CreateFileCommand> {
 
-    private java.lang.CharSequence file;
-    private java.lang.CharSequence content;
+    private java.lang.String file;
+    private java.lang.String content;
 
     /** Creates a new Builder */
     private Builder() {
@@ -199,7 +199,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'file' field.
       * @return The value.
       */
-    public java.lang.CharSequence getFile() {
+    public java.lang.String getFile() {
       return file;
     }
 
@@ -208,7 +208,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'file'.
       * @return This builder.
       */
-    public avro.commands.CreateFileCommand.Builder setFile(java.lang.CharSequence value) {
+    public avro.commands.CreateFileCommand.Builder setFile(java.lang.String value) {
       validate(fields()[0], value);
       this.file = value;
       fieldSetFlags()[0] = true;
@@ -238,7 +238,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'content' field.
       * @return The value.
       */
-    public java.lang.CharSequence getContent() {
+    public java.lang.String getContent() {
       return content;
     }
 
@@ -247,7 +247,7 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'content'.
       * @return This builder.
       */
-    public avro.commands.CreateFileCommand.Builder setContent(java.lang.CharSequence value) {
+    public avro.commands.CreateFileCommand.Builder setContent(java.lang.String value) {
       validate(fields()[1], value);
       this.content = value;
       fieldSetFlags()[1] = true;
@@ -278,8 +278,8 @@ public class CreateFileCommand extends org.apache.avro.specific.SpecificRecordBa
     public CreateFileCommand build() {
       try {
         CreateFileCommand record = new CreateFileCommand();
-        record.file = fieldSetFlags()[0] ? this.file : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.content = fieldSetFlags()[1] ? this.content : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.file = fieldSetFlags()[0] ? this.file : (java.lang.String) defaultValue(fields()[0]);
+        record.content = fieldSetFlags()[1] ? this.content : (java.lang.String) defaultValue(fields()[1]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

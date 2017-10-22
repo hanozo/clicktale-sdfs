@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -6554462480702898554L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MakeDirCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"path\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MakeDirCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,7 +51,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence path;
+  @Deprecated public java.lang.String path;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -64,7 +64,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
    * All-args constructor.
    * @param path The new value for path
    */
-  public MakeDirCommand(java.lang.CharSequence path) {
+  public MakeDirCommand(java.lang.String path) {
     this.path = path;
   }
 
@@ -81,7 +81,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: path = (java.lang.CharSequence)value$; break;
+    case 0: path = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -90,7 +90,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'path' field.
    * @return The value of the 'path' field.
    */
-  public java.lang.CharSequence getPath() {
+  public java.lang.String getPath() {
     return path;
   }
 
@@ -98,7 +98,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
    * Sets the value of the 'path' field.
    * @param value the value to set.
    */
-  public void setPath(java.lang.CharSequence value) {
+  public void setPath(java.lang.String value) {
     this.path = value;
   }
 
@@ -134,7 +134,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<MakeDirCommand>
     implements org.apache.avro.data.RecordBuilder<MakeDirCommand> {
 
-    private java.lang.CharSequence path;
+    private java.lang.String path;
 
     /** Creates a new Builder */
     private Builder() {
@@ -169,7 +169,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
       * Gets the value of the 'path' field.
       * @return The value.
       */
-    public java.lang.CharSequence getPath() {
+    public java.lang.String getPath() {
       return path;
     }
 
@@ -178,7 +178,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'path'.
       * @return This builder.
       */
-    public avro.commands.MakeDirCommand.Builder setPath(java.lang.CharSequence value) {
+    public avro.commands.MakeDirCommand.Builder setPath(java.lang.String value) {
       validate(fields()[0], value);
       this.path = value;
       fieldSetFlags()[0] = true;
@@ -209,7 +209,7 @@ public class MakeDirCommand extends org.apache.avro.specific.SpecificRecordBase 
     public MakeDirCommand build() {
       try {
         MakeDirCommand record = new MakeDirCommand();
-        record.path = fieldSetFlags()[0] ? this.path : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.path = fieldSetFlags()[0] ? this.path : (java.lang.String) defaultValue(fields()[0]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

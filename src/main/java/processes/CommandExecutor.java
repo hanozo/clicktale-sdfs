@@ -17,9 +17,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by user on 02/10/2017.
- */
 public class CommandExecutor {
 
     private static final Logger logger = LogManager.getLogger();
@@ -32,10 +29,10 @@ public class CommandExecutor {
     /**
      * There is no native polymorphism avro support hence ruining the command design pattern
      *
-     * @param cmd
-     * @throws AvroRemoteException
+     * @param cmd The actual dir/file command.
+     * @throws IOException Thrown when namenode connection can't be established.
      */
-    public void execute(SpecificRecord cmd) throws IOException {
+    void execute(SpecificRecord cmd) throws IOException {
 
         List<DataNodeInfo> nodes;
 
@@ -52,7 +49,7 @@ public class CommandExecutor {
 
             for (DataNodeInfo node : nodes) {
 
-                String host = node.getAddress().toString();
+                String host = node.getAddress();
 
                 try (NettyTransceiver netty = new NettyTransceiver(new InetSocketAddress(host, node.getPort()))) {
 
@@ -81,17 +78,17 @@ public class CommandExecutor {
     private String getPath(SpecificRecord cmd) {
 
         if (cmd instanceof MakeDirCommand) {
-            return ((MakeDirCommand) cmd).getPath().toString();
+            return ((MakeDirCommand) cmd).getPath();
         } else if (cmd instanceof RemoveDirCommand) {
-            return ((RemoveDirCommand) cmd).getPath().toString();
+            return ((RemoveDirCommand) cmd).getPath();
         } else if (cmd instanceof RenameDirCommand) {
-            return ((RenameDirCommand) cmd).getOldName().toString();
+            return ((RenameDirCommand) cmd).getOldName();
         } else if (cmd instanceof CreateFileCommand) {
-            return ((CreateFileCommand) cmd).getFile().toString();
+            return ((CreateFileCommand) cmd).getFile();
         } else if (cmd instanceof RemoveFileCommand) {
-            return ((RemoveFileCommand) cmd).getFile().toString();
+            return ((RemoveFileCommand) cmd).getFile();
         } else {
-            return ((UpdateFileCommand) cmd).getFile().toString();
+            return ((UpdateFileCommand) cmd).getFile();
         }
     }
 }

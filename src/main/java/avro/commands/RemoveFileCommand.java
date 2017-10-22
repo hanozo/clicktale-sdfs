@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -5211288535649161220L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RemoveFileCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"file\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RemoveFileCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,7 +51,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence file;
+  @Deprecated public java.lang.String file;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -64,7 +64,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * All-args constructor.
    * @param file The new value for file
    */
-  public RemoveFileCommand(java.lang.CharSequence file) {
+  public RemoveFileCommand(java.lang.String file) {
     this.file = file;
   }
 
@@ -81,7 +81,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: file = (java.lang.CharSequence)value$; break;
+    case 0: file = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -90,7 +90,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'file' field.
    * @return The value of the 'file' field.
    */
-  public java.lang.CharSequence getFile() {
+  public java.lang.String getFile() {
     return file;
   }
 
@@ -98,7 +98,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'file' field.
    * @param value the value to set.
    */
-  public void setFile(java.lang.CharSequence value) {
+  public void setFile(java.lang.String value) {
     this.file = value;
   }
 
@@ -134,7 +134,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RemoveFileCommand>
     implements org.apache.avro.data.RecordBuilder<RemoveFileCommand> {
 
-    private java.lang.CharSequence file;
+    private java.lang.String file;
 
     /** Creates a new Builder */
     private Builder() {
@@ -169,7 +169,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'file' field.
       * @return The value.
       */
-    public java.lang.CharSequence getFile() {
+    public java.lang.String getFile() {
       return file;
     }
 
@@ -178,7 +178,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'file'.
       * @return This builder.
       */
-    public avro.commands.RemoveFileCommand.Builder setFile(java.lang.CharSequence value) {
+    public avro.commands.RemoveFileCommand.Builder setFile(java.lang.String value) {
       validate(fields()[0], value);
       this.file = value;
       fieldSetFlags()[0] = true;
@@ -209,7 +209,7 @@ public class RemoveFileCommand extends org.apache.avro.specific.SpecificRecordBa
     public RemoveFileCommand build() {
       try {
         RemoveFileCommand record = new RemoveFileCommand();
-        record.file = fieldSetFlags()[0] ? this.file : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.file = fieldSetFlags()[0] ? this.file : (java.lang.String) defaultValue(fields()[0]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

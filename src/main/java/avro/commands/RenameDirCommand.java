@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4160062809255016306L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RenameDirCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"oldName\",\"type\":\"string\"},{\"name\":\"newName\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RenameDirCommand\",\"namespace\":\"avro.commands\",\"fields\":[{\"name\":\"oldName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"newName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,8 +51,8 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence oldName;
-  @Deprecated public java.lang.CharSequence newName;
+  @Deprecated public java.lang.String oldName;
+  @Deprecated public java.lang.String newName;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -66,7 +66,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
    * @param oldName The new value for oldName
    * @param newName The new value for newName
    */
-  public RenameDirCommand(java.lang.CharSequence oldName, java.lang.CharSequence newName) {
+  public RenameDirCommand(java.lang.String oldName, java.lang.String newName) {
     this.oldName = oldName;
     this.newName = newName;
   }
@@ -85,8 +85,8 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: oldName = (java.lang.CharSequence)value$; break;
-    case 1: newName = (java.lang.CharSequence)value$; break;
+    case 0: oldName = (java.lang.String)value$; break;
+    case 1: newName = (java.lang.String)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -95,7 +95,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
    * Gets the value of the 'oldName' field.
    * @return The value of the 'oldName' field.
    */
-  public java.lang.CharSequence getOldName() {
+  public java.lang.String getOldName() {
     return oldName;
   }
 
@@ -103,7 +103,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
    * Sets the value of the 'oldName' field.
    * @param value the value to set.
    */
-  public void setOldName(java.lang.CharSequence value) {
+  public void setOldName(java.lang.String value) {
     this.oldName = value;
   }
 
@@ -111,7 +111,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
    * Gets the value of the 'newName' field.
    * @return The value of the 'newName' field.
    */
-  public java.lang.CharSequence getNewName() {
+  public java.lang.String getNewName() {
     return newName;
   }
 
@@ -119,7 +119,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
    * Sets the value of the 'newName' field.
    * @param value the value to set.
    */
-  public void setNewName(java.lang.CharSequence value) {
+  public void setNewName(java.lang.String value) {
     this.newName = value;
   }
 
@@ -155,8 +155,8 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RenameDirCommand>
     implements org.apache.avro.data.RecordBuilder<RenameDirCommand> {
 
-    private java.lang.CharSequence oldName;
-    private java.lang.CharSequence newName;
+    private java.lang.String oldName;
+    private java.lang.String newName;
 
     /** Creates a new Builder */
     private Builder() {
@@ -199,7 +199,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
       * Gets the value of the 'oldName' field.
       * @return The value.
       */
-    public java.lang.CharSequence getOldName() {
+    public java.lang.String getOldName() {
       return oldName;
     }
 
@@ -208,7 +208,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
       * @param value The value of 'oldName'.
       * @return This builder.
       */
-    public avro.commands.RenameDirCommand.Builder setOldName(java.lang.CharSequence value) {
+    public avro.commands.RenameDirCommand.Builder setOldName(java.lang.String value) {
       validate(fields()[0], value);
       this.oldName = value;
       fieldSetFlags()[0] = true;
@@ -238,7 +238,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
       * Gets the value of the 'newName' field.
       * @return The value.
       */
-    public java.lang.CharSequence getNewName() {
+    public java.lang.String getNewName() {
       return newName;
     }
 
@@ -247,7 +247,7 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
       * @param value The value of 'newName'.
       * @return This builder.
       */
-    public avro.commands.RenameDirCommand.Builder setNewName(java.lang.CharSequence value) {
+    public avro.commands.RenameDirCommand.Builder setNewName(java.lang.String value) {
       validate(fields()[1], value);
       this.newName = value;
       fieldSetFlags()[1] = true;
@@ -278,8 +278,8 @@ public class RenameDirCommand extends org.apache.avro.specific.SpecificRecordBas
     public RenameDirCommand build() {
       try {
         RenameDirCommand record = new RenameDirCommand();
-        record.oldName = fieldSetFlags()[0] ? this.oldName : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.newName = fieldSetFlags()[1] ? this.newName : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.oldName = fieldSetFlags()[0] ? this.oldName : (java.lang.String) defaultValue(fields()[0]);
+        record.newName = fieldSetFlags()[1] ? this.newName : (java.lang.String) defaultValue(fields()[1]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

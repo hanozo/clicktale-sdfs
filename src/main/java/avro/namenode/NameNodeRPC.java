@@ -9,11 +9,11 @@ package avro.namenode;
 /** NameNode Protocol */
 @org.apache.avro.specific.AvroGenerated
 public interface NameNodeRPC {
-  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"NameNodeRPC\",\"namespace\":\"avro.namenode\",\"doc\":\"NameNode Protocol\",\"types\":[{\"type\":\"record\",\"name\":\"DataNodeInfo\",\"fields\":[{\"name\":\"address\",\"type\":\"string\"},{\"name\":\"port\",\"type\":\"int\"},{\"name\":\"diskUsage\",\"type\":\"long\"}]}],\"messages\":{\"askForNodes\":{\"doc\":\"Query name node for the corresponding data nodes (2 nodes in our case) to carry our command.\",\"request\":[{\"name\":\"path\",\"type\":\"string\"}],\"response\":{\"type\":\"array\",\"items\":\"DataNodeInfo\"}},\"advertise\":{\"request\":[{\"name\":\"node\",\"type\":\"DataNodeInfo\"}],\"response\":\"null\"}}}");
+  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"NameNodeRPC\",\"namespace\":\"avro.namenode\",\"doc\":\"NameNode Protocol\",\"types\":[{\"type\":\"record\",\"name\":\"DataNodeInfo\",\"fields\":[{\"name\":\"address\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"port\",\"type\":\"int\"},{\"name\":\"diskUsage\",\"type\":\"long\"}]}],\"messages\":{\"askForNodes\":{\"doc\":\"Query name node for the corresponding data nodes (2 nodes in our case) to carry our command.\",\"request\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":{\"type\":\"array\",\"items\":\"DataNodeInfo\"}},\"advertise\":{\"request\":[{\"name\":\"node\",\"type\":\"DataNodeInfo\"}],\"response\":\"null\"}}}");
   /**
    * Query name node for the corresponding data nodes (2 nodes in our case) to carry our command.
    */
-  java.util.List<avro.namenode.DataNodeInfo> askForNodes(java.lang.CharSequence path) throws org.apache.avro.AvroRemoteException;
+  java.util.List<avro.namenode.DataNodeInfo> askForNodes(java.lang.String path) throws org.apache.avro.AvroRemoteException;
   /**
    */
   java.lang.Void advertise(avro.namenode.DataNodeInfo node) throws org.apache.avro.AvroRemoteException;
@@ -26,7 +26,7 @@ public interface NameNodeRPC {
      * Query name node for the corresponding data nodes (2 nodes in our case) to carry our command.
      * @throws java.io.IOException The async call could not be completed.
      */
-    void askForNodes(java.lang.CharSequence path, org.apache.avro.ipc.Callback<java.util.List<avro.namenode.DataNodeInfo>> callback) throws java.io.IOException;
+    void askForNodes(java.lang.String path, org.apache.avro.ipc.Callback<java.util.List<avro.namenode.DataNodeInfo>> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */

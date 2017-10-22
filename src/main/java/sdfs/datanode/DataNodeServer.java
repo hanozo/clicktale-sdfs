@@ -1,44 +1,27 @@
 package sdfs.datanode;
 
 import avro.commands.*;
-import avro.namenode.NameNodeRPC;
 import org.apache.avro.AvroRemoteException;
-import org.apache.avro.ipc.NettyTransceiver;
-import org.apache.avro.ipc.specific.SpecificRequestor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.Closeable;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Optional;
 
-/**
- * Created by user on 01/10/2017.
- */
-class DataNodeServer implements DataNodeRPC, Closeable {
+class DataNodeServer implements DataNodeRPC {
 
     private static final Logger logger = LogManager.getLogger();
 
     static final String DATA = Optional.ofNullable(System.getenv("DATA")).orElse("C:\\Data");
-    String nameNodeHost = Optional.ofNullable(System.getenv("NAME_NODE")).orElse(InetAddress.getLocalHost().getHostName());
     private final Path path;
 
-    private final NettyTransceiver netty;
-    private final NameNodeRPC proxy;
-
-    public DataNodeServer(String perNodePath) throws IOException {
+    DataNodeServer(String perNodePath) throws IOException {
 
         this.path = Paths.get(DATA, perNodePath);
-
-        netty = new NettyTransceiver(new InetSocketAddress(nameNodeHost, 65111));
-
-        proxy = SpecificRequestor.getClient(NameNodeRPC.class, netty);
     }
 
     @Override
@@ -46,7 +29,7 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path dir = this.path.resolve(command.getPath().toString());
+            Path dir = this.path.resolve(command.getPath());
 
             Files.createDirectories(dir);
 
@@ -63,7 +46,7 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path path = this.path.resolve(command.getPath().toString());
+            Path path = this.path.resolve(command.getPath());
 
             return Files.deleteIfExists(path);
 
@@ -78,9 +61,9 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path src = this.path.resolve(command.getOldName().toString());
+            Path src = this.path.resolve(command.getOldName());
 
-            Path trg = this.path.resolve(command.getNewName().toString());
+            Path trg = this.path.resolve(command.getNewName());
 
             Files.move(src, trg);
 
@@ -97,11 +80,11 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path path = this.path.resolve(command.getFile().toString());
+            Path path = this.path.resolve(command.getFile());
 
             Files.createDirectories(path.getParent());
 
-            Files.write(path, command.getContent().toString().getBytes(), StandardOpenOption.CREATE);
+            Files.write(path, command.getContent().getBytes(), StandardOpenOption.CREATE);
 
         } catch (IOException e) {
             logger.error(e);
@@ -116,7 +99,7 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path path = this.path.resolve(command.getFile().toString());
+            Path path = this.path.resolve(command.getFile());
 
             return Files.deleteIfExists(path);
 
@@ -131,9 +114,9 @@ class DataNodeServer implements DataNodeRPC, Closeable {
 
         try {
 
-            Path path = this.path.resolve(command.getFile().toString());
+            Path path = this.path.resolve(command.getFile());
 
-            Files.write(path, command.getContent().toString().getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, command.getContent().getBytes(), StandardOpenOption.APPEND);
 
         } catch (IOException e) {
             logger.error(e);
@@ -141,10 +124,5 @@ class DataNodeServer implements DataNodeRPC, Closeable {
         }
 
         return null;
-    }
-
-    @Override
-    public void close() throws IOException {
-        netty.close();
     }
 }

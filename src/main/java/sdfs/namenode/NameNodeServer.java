@@ -30,6 +30,7 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
     private static final Logger logger = LogManager.getLogger();
     private static final String ZK_HOSTS = Optional.ofNullable(System.getenv("ZOOKEEPER")).orElse("localhost:2181");
     private static final String GROUP_PATH = "/sdfs";
+    private static final int REPLICATION_FACTOR = 2;
 
     private static final ConcurrentHashMap<Path, List<DataNodeInfo>> dir = new ConcurrentHashMap<>();
     private volatile Collection<DataNodeInfo> nodes;
@@ -46,12 +47,12 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
      * @throws AvroRemoteException Any unhandled exception wrapped in AvroRemoteException
      */
     @Override
-    public List<DataNodeInfo> askForNodes(CharSequence path) throws AvroRemoteException {
+    public List<DataNodeInfo> askForNodes(String path) throws AvroRemoteException {
 
-        return dir.computeIfAbsent(Paths.get(path.toString()),
+        return dir.computeIfAbsent(Paths.get(path),
                 key -> nodes.stream()
                         .sorted(Comparator.comparingLong(DataNodeInfo::getDiskUsage))
-                        .limit(2)
+                        .limit(REPLICATION_FACTOR)
                         .collect(Collectors.toList()));
     }
 
@@ -65,11 +66,10 @@ public class NameNodeServer implements NameNodeRPC, Watcher {
     @Override
     public Void advertise(DataNodeInfo node) throws AvroRemoteException {
 
-        String addr = node.getAddress().toString();
+        String addr = node.getAddress();
 
         nodes.stream()
                 .filter(n -> n.getAddress()
-                        .toString()
                         .equalsIgnoreCase(addr))
                 .findFirst()
                 .ifPresent(n -> n.setDiskUsage(node.getDiskUsage()));

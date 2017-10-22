@@ -60,6 +60,7 @@ public class DataNode {
         Runtime.getRuntime().addShutdownHook(new Thread(node::shutdown));
 
         System.out.println("DataNode has been advertised. Hit enter to stop...");
+        //noinspection ResultOfMethodCallIgnored
         System.in.read();
 
         node.shutdown();
@@ -71,13 +72,19 @@ public class DataNode {
         advertiser.shutdown();
     }
 
-    public void bootstrap(final int port) {
+    private void bootstrap(final int port) {
+        bootstrap(port, null);
+    }
+
+    public void bootstrap(final int port, final String testPath) {
 
         executor.submit(() -> {
 
             try {
 
-                String perNodePath = joinGroup(port);
+                String createdPath = joinGroup(port);
+
+                String perNodePath = (testPath != null) ? testPath : createdPath;
 
                 NettyTransceiver netty = null;
 
@@ -174,9 +181,9 @@ public class DataNode {
     /**
      * The server implements the DataNodeRPC protocol (DataNodeServer)
      *
-     * @param perNodePath is created per node while running on your local machine
-     * @param port        a different port is required while running multiple instances of data nodes on local machine
-     * @throws IOException
+     * @param perNodePath Is created per node while running on your local machine.
+     * @param port        A different port is required while running multiple instances of data nodes on local machine.
+     * @throws IOException DataNode RPC server failure.
      */
     private static void startServer(String perNodePath, int port) throws IOException {
 

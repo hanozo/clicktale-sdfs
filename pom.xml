@@ -140,6 +140,7 @@
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
                             <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                            <stringType>String</stringType>
                            <!-- <includes>
                                 <include>**/*.avro</include>
                                 <include>**/*.avpr</include>

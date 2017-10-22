@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4819610795599398454L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DataNodeInfo\",\"namespace\":\"avro.namenode\",\"fields\":[{\"name\":\"address\",\"type\":\"string\"},{\"name\":\"port\",\"type\":\"int\"},{\"name\":\"diskUsage\",\"type\":\"long\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DataNodeInfo\",\"namespace\":\"avro.namenode\",\"fields\":[{\"name\":\"address\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"port\",\"type\":\"int\"},{\"name\":\"diskUsage\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,7 +51,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence address;
+  @Deprecated public java.lang.String address;
   @Deprecated public int port;
   @Deprecated public long diskUsage;
 
@@ -68,7 +68,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
    * @param port The new value for port
    * @param diskUsage The new value for diskUsage
    */
-  public DataNodeInfo(java.lang.CharSequence address, java.lang.Integer port, java.lang.Long diskUsage) {
+  public DataNodeInfo(java.lang.String address, java.lang.Integer port, java.lang.Long diskUsage) {
     this.address = address;
     this.port = port;
     this.diskUsage = diskUsage;
@@ -89,7 +89,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: address = (java.lang.CharSequence)value$; break;
+    case 0: address = (java.lang.String)value$; break;
     case 1: port = (java.lang.Integer)value$; break;
     case 2: diskUsage = (java.lang.Long)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -100,7 +100,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
    * Gets the value of the 'address' field.
    * @return The value of the 'address' field.
    */
-  public java.lang.CharSequence getAddress() {
+  public java.lang.String getAddress() {
     return address;
   }
 
@@ -108,7 +108,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'address' field.
    * @param value the value to set.
    */
-  public void setAddress(java.lang.CharSequence value) {
+  public void setAddress(java.lang.String value) {
     this.address = value;
   }
 
@@ -176,7 +176,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<DataNodeInfo>
     implements org.apache.avro.data.RecordBuilder<DataNodeInfo> {
 
-    private java.lang.CharSequence address;
+    private java.lang.String address;
     private int port;
     private long diskUsage;
 
@@ -229,7 +229,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
       * Gets the value of the 'address' field.
       * @return The value.
       */
-    public java.lang.CharSequence getAddress() {
+    public java.lang.String getAddress() {
       return address;
     }
 
@@ -238,7 +238,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'address'.
       * @return This builder.
       */
-    public avro.namenode.DataNodeInfo.Builder setAddress(java.lang.CharSequence value) {
+    public avro.namenode.DataNodeInfo.Builder setAddress(java.lang.String value) {
       validate(fields()[0], value);
       this.address = value;
       fieldSetFlags()[0] = true;
@@ -345,7 +345,7 @@ public class DataNodeInfo extends org.apache.avro.specific.SpecificRecordBase im
     public DataNodeInfo build() {
       try {
         DataNodeInfo record = new DataNodeInfo();
-        record.address = fieldSetFlags()[0] ? this.address : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.address = fieldSetFlags()[0] ? this.address : (java.lang.String) defaultValue(fields()[0]);
         record.port = fieldSetFlags()[1] ? this.port : (java.lang.Integer) defaultValue(fields()[1]);
         record.diskUsage = fieldSetFlags()[2] ? this.diskUsage : (java.lang.Long) defaultValue(fields()[2]);
         return record;
