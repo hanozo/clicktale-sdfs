@@ -2,6 +2,7 @@ package mq.rabbit;
 
 import avro.AvroJsonDecoder;
 import avro.AvroJsonEncoder;
+import avro.commands.BareResponse;
 import com.rabbitmq.client.*;
 import mq.MQRPCServer;
 import org.apache.avro.specific.SpecificRecord;
@@ -33,7 +34,7 @@ public class RabbitRPCServer implements MQRPCServer {
         channel = connection.createChannel();
     }
 
-    public void process(java.util.function.Function<SpecificRecord, SpecificRecord> handler) {
+    public void process(java.util.function.Function<SpecificRecord, BareResponse> handler) {
 
         future = executor.submit(() ->
         {
@@ -55,8 +56,8 @@ public class RabbitRPCServer implements MQRPCServer {
 
                         try {
                             SpecificRecord cmd = decoder.deserialize(body);
-                            SpecificRecord response = handler.apply(cmd);
-                            channel.basicPublish("", properties.getReplyTo(), replyProps, encoder.serialize(response));
+                            BareResponse response = handler.apply(cmd);
+                            channel.basicPublish("", properties.getReplyTo(), replyProps, encoder.encode(response));
                         } catch (RuntimeException e) {
                             System.out.println(" [.] " + e.toString());
                         } finally {

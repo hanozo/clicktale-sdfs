@@ -134,7 +134,7 @@ public class DataNode {
             } catch (IOException | KeeperException | ExecutionException | TimeoutException e) {
                 logger.error(e);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                // ignore
 
             } finally {
                 if (zk != null) {

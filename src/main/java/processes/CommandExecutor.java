@@ -29,9 +29,10 @@ public class CommandExecutor {
      * There is no native polymorphism avro support hence ruining the command design pattern
      *
      * @param cmd The actual dir/file command.
-     * @throws IOException Thrown when namenode connection can't be established.
+     * @return boolean/path feedback
+     * @throws Curse Thrown when namenode connection can't be established or not enough replications are available to fulfill the request.
      */
-    void execute(SpecificRecord cmd) throws IOException {
+    Object execute(SpecificRecord cmd) throws Curse {
 
         List<DataNodeInfo> nodes;
 
@@ -42,36 +43,47 @@ public class CommandExecutor {
             nodes = proxy.askForNodes(getPath(cmd));
 
             logger.info("askForNodes replied with: " + nodes);
+
+        } catch (IOException e) {
+
+            throw new Curse(e);
         }
 
-        if (nodes != null) {
+        if (nodes == null || nodes.size() <= 1)
+            throw Curse.newBuilder().setMessage$("At least two replications are required to satisfy any request").build();
 
-            for (DataNodeInfo node : nodes) {
+        Object response = null;
 
-                String host = node.getAddress();
+        for (DataNodeInfo node : nodes) {
 
-                try (NettyTransceiver netty = new NettyTransceiver(new InetSocketAddress(host, node.getPort()))) {
+            String host = node.getAddress();
 
-                    DataNodeRPC proxy = SpecificRequestor.getClient(DataNodeRPC.class, netty);
+            try (NettyTransceiver netty = new NettyTransceiver(new InetSocketAddress(host, node.getPort()))) {
 
-                    if (cmd instanceof MakeDirCommand) {
-                        proxy.makeDir((MakeDirCommand) cmd);
-                    } else if (cmd instanceof RemoveDirCommand) {
-                        proxy.removeDir((RemoveDirCommand) cmd);
-                    } else if (cmd instanceof RenameDirCommand) {
-                        proxy.renameDir((RenameDirCommand) cmd);
-                    } else if (cmd instanceof CreateFileCommand) {
-                        proxy.createFile((CreateFileCommand) cmd);
-                    } else if (cmd instanceof RemoveFileCommand) {
-                        proxy.removeFile((RemoveFileCommand) cmd);
-                    } else if (cmd instanceof UpdateFileCommand) {
-                        proxy.updateFile((UpdateFileCommand) cmd);
-                    }
-                } catch (Exception e) {
-                    logger.error(e);
+                DataNodeRPC proxy = SpecificRequestor.getClient(DataNodeRPC.class, netty);
+
+                if (cmd instanceof MakeDirCommand) {
+                    response = proxy.makeDir((MakeDirCommand) cmd);
+                } else if (cmd instanceof RemoveDirCommand) {
+                    response = proxy.removeDir((RemoveDirCommand) cmd);
+                } else if (cmd instanceof RenameDirCommand) {
+                    response = proxy.renameDir((RenameDirCommand) cmd);
+                } else if (cmd instanceof CreateFileCommand) {
+                    response = proxy.createFile((CreateFileCommand) cmd);
+                } else if (cmd instanceof RemoveFileCommand) {
+                    response = proxy.removeFile((RemoveFileCommand) cmd);
+                } else if (cmd instanceof UpdateFileCommand) {
+                    response = proxy.updateFile((UpdateFileCommand) cmd);
                 }
+            } catch (Exception e) {
+                logger.error(e);
+                // replication retry
             }
         }
+
+        if (response == null) throw Curse.newBuilder().setMessage$("Command failed.").build();
+
+        return response;
     }
 
     private String getPath(SpecificRecord cmd) {

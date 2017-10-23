@@ -84,6 +84,21 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "doc": "Ships command feedback through MQ.",
+      "name": "BareResponse",
+      "type": "record",
+      "fields": [
+        {
+          "name": "succeeded",
+          "type": "boolean"
+        },
+        {
+          "name": "feedback",
+          "type": "string"
+        }
+      ]
     }
   ],
   "messages": {
@@ -95,7 +110,8 @@
           "type": "MakeDirCommand"
         }
       ],
-      "response": "null"
+      "response": "string",
+      "errors": ["Curse"]
     },
     "removeDir": {
       "doc": "Issue a remove dor command on a remote data node.",
@@ -105,7 +121,8 @@
           "type": "RemoveDirCommand"
         }
       ],
-      "response": "boolean"
+      "response": "boolean",
+      "errors": ["Curse"]
     },
     "renameDir": {
       "doc": "Issue a rename dir command on a remote data node.",
@@ -115,7 +132,8 @@
           "type": "RenameDirCommand"
         }
       ],
-      "response": "null"
+      "response": "string",
+      "errors": ["Curse"]
     },
     "createFile": {
       "doc": "Issue a create file command on a remote data node.",
@@ -125,7 +143,8 @@
           "type": "CreateFileCommand"
         }
       ],
-      "response": "null"
+      "response": "string",
+      "errors": ["Curse"]
     },
     "removeFile": {
       "doc": "Issue a remove file command on a remote data node.",
@@ -135,7 +154,8 @@
           "type": "RemoveFileCommand"
         }
       ],
-      "response": "boolean"
+      "response": "boolean",
+      "errors": ["Curse"]
     },
     "updateFile": {
       "doc": "Issue a update file command on a remote data node.",
@@ -145,7 +165,8 @@
           "type": "UpdateFileCommand"
         }
       ],
-      "response": "null"
+      "response": "string",
+      "errors": ["Curse"]
     }
   }
 }

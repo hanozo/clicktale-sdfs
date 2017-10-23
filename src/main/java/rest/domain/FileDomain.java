@@ -1,5 +1,6 @@
 package rest.domain;
 
+import avro.commands.BareResponse;
 import avro.commands.CreateFileCommand;
 import avro.commands.RemoveFileCommand;
 import avro.commands.UpdateFileCommand;
@@ -7,6 +8,7 @@ import mq.MQRPCClient;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 /**
  * Schedule file commands through MQ
@@ -20,16 +22,16 @@ public class FileDomain implements Closeable {
         this.client = client;
     }
 
-    public void create(final CreateFileCommand cmd) throws IOException, InterruptedException {
-        client.call(cmd);
+    public Future<BareResponse> create(final CreateFileCommand cmd) throws IOException, InterruptedException {
+        return client.call(cmd);
     }
 
-    public void remove(final RemoveFileCommand cmd) throws IOException, InterruptedException {
-        client.call(cmd);
+    public Future<BareResponse> remove(final RemoveFileCommand cmd) throws IOException, InterruptedException {
+        return client.call(cmd);
     }
 
-    public void update(final UpdateFileCommand cmd) throws IOException, InterruptedException {
-        client.call(cmd);
+    public Future<BareResponse> update(final UpdateFileCommand cmd) throws IOException, InterruptedException {
+        return client.call(cmd);
     }
 
     @Override

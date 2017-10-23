@@ -1,6 +1,8 @@
 package mq.rabbit;
 
+import avro.AvroJsonDecoder;
 import avro.AvroJsonEncoder;
+import avro.commands.BareResponse;
 import com.rabbitmq.client.*;
 import mq.MQRPCClient;
 import org.apache.avro.specific.SpecificRecord;
@@ -22,6 +24,7 @@ public class RabbitRPCClient implements MQRPCClient {
     private final String replyQueueName;
 
     private final AvroJsonEncoder encoder = new AvroJsonEncoder();
+    private final AvroJsonDecoder decoder = new AvroJsonDecoder();
 
     private final Connection connection;
     private final Channel channel;
@@ -30,15 +33,12 @@ public class RabbitRPCClient implements MQRPCClient {
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
-
         connection = factory.newConnection();
         channel = connection.createChannel();
-//        channel.queueDeclare(queue, false, false, false, null);
-
         replyQueueName = channel.queueDeclare().getQueue();
     }
 
-    public <T extends SpecificRecord> CompletableFuture<T> call(T request) throws IOException, InterruptedException {
+    public <T extends SpecificRecord> CompletableFuture<BareResponse> call(T request) throws IOException, InterruptedException {
 
         String corrId = UUID.randomUUID().toString();
 
@@ -50,13 +50,17 @@ public class RabbitRPCClient implements MQRPCClient {
 
         channel.basicPublish("", RPC_COMMANDS_QUEUE, props, encoder.serialize(request));
 
-        final CompletableFuture<T> future = new CompletableFuture<>();
+        final CompletableFuture<BareResponse> future = new CompletableFuture<>();
 
         channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 if (properties.getCorrelationId().equals(corrId)) {
-                    future.complete(null);
+                    BareResponse response = decoder.deserialize(BareResponse.class, body);
+                    if (response.getSucceeded())
+                        future.complete(response);
+                    else
+                        future.completeExceptionally(new Exception(response.getFeedback()));
                 }
             }
         });

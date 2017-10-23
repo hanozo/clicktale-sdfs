@@ -33,12 +33,19 @@ public class FileCommandController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response create(CreateFileCommand cmd) {
         try {
             validate(cmd.getFile());
-            domain.create(cmd);
+            BareResponse bare = domain.create(cmd).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -49,13 +56,20 @@ public class FileCommandController {
     }
 
     @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{file}")
     public Response remove(@PathParam("file") String file) {
         try {
             validate(file);
-            domain.remove(new RemoveFileCommand(file));
+            BareResponse bare = domain.remove(new RemoveFileCommand(file)).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -67,12 +81,19 @@ public class FileCommandController {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response update(UpdateFileCommand cmd) {
         try {
             validate(cmd.getFile());
-            domain.update(cmd);
+            BareResponse bare = domain.update(cmd).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -84,12 +105,34 @@ public class FileCommandController {
 
     /**
      * Converts a path string to a {@code Path}
-     * @param path
-     * @throws InvalidPathException
-     *          if the path string cannot be converted to a {@code Path}
+     *
+     * @param path full path file name
+     * @throws InvalidPathException if the path string cannot be converted to a {@code Path}
      */
-    private void validate(CharSequence path) throws InvalidPathException {
+    private void validate(String path) throws InvalidPathException {
 
-        Paths.get(path.toString());
+        Paths.get(path);
+    }
+
+    private static class Result {
+
+        private boolean succeeded;
+        private String feedback;
+
+        public boolean isSucceeded() {
+            return succeeded;
+        }
+
+        void setSucceeded(boolean succeeded) {
+            this.succeeded = succeeded;
+        }
+
+        public String getFeedback() {
+            return feedback;
+        }
+
+        void setFeedback(String feedback) {
+            this.feedback = feedback;
+        }
     }
 }

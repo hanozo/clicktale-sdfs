@@ -33,12 +33,19 @@ public class DirCommandController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response create(MakeDirCommand cmd) {
         try {
             validate(cmd.getPath());
-            domain.make(cmd);
+            BareResponse bare = domain.make(cmd).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -49,15 +56,21 @@ public class DirCommandController {
     }
 
 
-
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response remove(RemoveDirCommand cmd) {
         try {
             validate(cmd.getPath());
-            domain.remove(cmd);
+            BareResponse bare = domain.remove(cmd).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -69,13 +82,20 @@ public class DirCommandController {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response rename(RenameDirCommand cmd) {
         try {
             validate(cmd.getOldName());
             validate(cmd.getNewName());
-            domain.rename(cmd);
+            BareResponse bare = domain.rename(cmd).get();
+
+            Result res = new Result();
+            res.setSucceeded(bare.getSucceeded());
+            res.setFeedback(bare.getFeedback());
+
             return Response
                     .ok()
+                    .entity(res)
                     .build();
         } catch (Exception e) {
             logger.error(e);
@@ -87,13 +107,35 @@ public class DirCommandController {
 
     /**
      * Converts a path string to a {@code Path}
-     * @param path
-     * @throws InvalidPathException
-     *          if the path string cannot be converted to a {@code Path}
+     *
+     * @param path dir name
+     * @throws InvalidPathException if the path string cannot be converted to a {@code Path}
      */
-    private void validate(CharSequence path) throws InvalidPathException {
+    private void validate(String path) throws InvalidPathException {
 
-        Paths.get(path.toString());
+        Paths.get(path);
+    }
+
+    private static class Result {
+
+        private boolean succeeded;
+        private String feedback;
+
+        public boolean isSucceeded() {
+            return succeeded;
+        }
+
+        void setSucceeded(boolean succeeded) {
+            this.succeeded = succeeded;
+        }
+
+        public String getFeedback() {
+            return feedback;
+        }
+
+        void setFeedback(String feedback) {
+            this.feedback = feedback;
+        }
     }
 
 }

@@ -25,7 +25,7 @@ class DataNodeServer implements DataNodeRPC {
     }
 
     @Override
-    public Void makeDir(MakeDirCommand command) throws AvroRemoteException {
+    public String makeDir(MakeDirCommand command) throws Curse {
 
         try {
 
@@ -35,14 +35,14 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
 
-        return null;
+        return command.getPath();
     }
 
     @Override
-    public boolean removeDir(RemoveDirCommand command) throws AvroRemoteException {
+    public boolean removeDir(RemoveDirCommand command) throws Curse {
 
         try {
 
@@ -52,12 +52,12 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
     }
 
     @Override
-    public Void renameDir(RenameDirCommand command) throws AvroRemoteException {
+    public String renameDir(RenameDirCommand command) throws Curse {
 
         try {
 
@@ -69,14 +69,14 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
 
-        return null;
+        return command.getNewName();
     }
 
     @Override
-    public Void createFile(CreateFileCommand command) throws AvroRemoteException {
+    public String createFile(CreateFileCommand command) throws Curse {
 
         try {
 
@@ -88,14 +88,14 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
 
-        return null;
+        return command.getFile();
     }
 
     @Override
-    public boolean removeFile(RemoveFileCommand command) throws AvroRemoteException {
+    public boolean removeFile(RemoveFileCommand command) throws Curse {
 
         try {
 
@@ -105,12 +105,12 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
     }
 
     @Override
-    public Void updateFile(UpdateFileCommand command) throws AvroRemoteException {
+    public String updateFile(UpdateFileCommand command) throws Curse {
 
         try {
 
@@ -120,9 +120,9 @@ class DataNodeServer implements DataNodeRPC {
 
         } catch (IOException e) {
             logger.error(e);
-            throw new AvroRemoteException(e);
+            throw new Curse(e);
         }
 
-        return null;
+        return command.getFile();
     }
 }

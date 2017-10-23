@@ -9,31 +9,31 @@ package avro.commands;
 /** DataNode Protocol */
 @org.apache.avro.specific.AvroGenerated
 public interface DataNodeRPC {
-  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"DataNodeRPC\",\"namespace\":\"avro.commands\",\"doc\":\"DataNode Protocol\",\"types\":[{\"type\":\"record\",\"name\":\"MakeDirCommand\",\"fields\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RemoveDirCommand\",\"fields\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RenameDirCommand\",\"fields\":[{\"name\":\"oldName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"newName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"CreateFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RemoveFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"UpdateFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"error\",\"name\":\"Curse\",\"fields\":[{\"name\":\"message\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}],\"messages\":{\"makeDir\":{\"doc\":\"Issue a make dir command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"MakeDirCommand\"}],\"response\":\"null\"},\"removeDir\":{\"doc\":\"Issue a remove dor command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RemoveDirCommand\"}],\"response\":\"boolean\"},\"renameDir\":{\"doc\":\"Issue a rename dir command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RenameDirCommand\"}],\"response\":\"null\"},\"createFile\":{\"doc\":\"Issue a create file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"CreateFileCommand\"}],\"response\":\"null\"},\"removeFile\":{\"doc\":\"Issue a remove file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RemoveFileCommand\"}],\"response\":\"boolean\"},\"updateFile\":{\"doc\":\"Issue a update file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"UpdateFileCommand\"}],\"response\":\"null\"}}}");
+  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"DataNodeRPC\",\"namespace\":\"avro.commands\",\"doc\":\"DataNode Protocol\",\"types\":[{\"type\":\"record\",\"name\":\"MakeDirCommand\",\"fields\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RemoveDirCommand\",\"fields\":[{\"name\":\"path\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RenameDirCommand\",\"fields\":[{\"name\":\"oldName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"newName\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"CreateFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"RemoveFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"UpdateFileCommand\",\"fields\":[{\"name\":\"file\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"error\",\"name\":\"Curse\",\"fields\":[{\"name\":\"message\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},{\"type\":\"record\",\"name\":\"BareResponse\",\"doc\":\"Ships command feedback through MQ.\",\"fields\":[{\"name\":\"succeeded\",\"type\":\"boolean\"},{\"name\":\"feedback\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}],\"messages\":{\"makeDir\":{\"doc\":\"Issue a make dir command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"MakeDirCommand\"}],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"errors\":[\"Curse\"]},\"removeDir\":{\"doc\":\"Issue a remove dor command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RemoveDirCommand\"}],\"response\":\"boolean\",\"errors\":[\"Curse\"]},\"renameDir\":{\"doc\":\"Issue a rename dir command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RenameDirCommand\"}],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"errors\":[\"Curse\"]},\"createFile\":{\"doc\":\"Issue a create file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"CreateFileCommand\"}],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"errors\":[\"Curse\"]},\"removeFile\":{\"doc\":\"Issue a remove file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"RemoveFileCommand\"}],\"response\":\"boolean\",\"errors\":[\"Curse\"]},\"updateFile\":{\"doc\":\"Issue a update file command on a remote data node.\",\"request\":[{\"name\":\"command\",\"type\":\"UpdateFileCommand\"}],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"errors\":[\"Curse\"]}}}");
   /**
    * Issue a make dir command on a remote data node.
    */
-  java.lang.Void makeDir(avro.commands.MakeDirCommand command) throws org.apache.avro.AvroRemoteException;
+  java.lang.String makeDir(avro.commands.MakeDirCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
   /**
    * Issue a remove dor command on a remote data node.
    */
-  boolean removeDir(avro.commands.RemoveDirCommand command) throws org.apache.avro.AvroRemoteException;
+  boolean removeDir(avro.commands.RemoveDirCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
   /**
    * Issue a rename dir command on a remote data node.
    */
-  java.lang.Void renameDir(avro.commands.RenameDirCommand command) throws org.apache.avro.AvroRemoteException;
+  java.lang.String renameDir(avro.commands.RenameDirCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
   /**
    * Issue a create file command on a remote data node.
    */
-  java.lang.Void createFile(avro.commands.CreateFileCommand command) throws org.apache.avro.AvroRemoteException;
+  java.lang.String createFile(avro.commands.CreateFileCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
   /**
    * Issue a remove file command on a remote data node.
    */
-  boolean removeFile(avro.commands.RemoveFileCommand command) throws org.apache.avro.AvroRemoteException;
+  boolean removeFile(avro.commands.RemoveFileCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
   /**
    * Issue a update file command on a remote data node.
    */
-  java.lang.Void updateFile(avro.commands.UpdateFileCommand command) throws org.apache.avro.AvroRemoteException;
+  java.lang.String updateFile(avro.commands.UpdateFileCommand command) throws org.apache.avro.AvroRemoteException, avro.commands.Curse;
 
   @SuppressWarnings("all")
   /** DataNode Protocol */
@@ -43,7 +43,7 @@ public interface DataNodeRPC {
      * Issue a make dir command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
      */
-    void makeDir(avro.commands.MakeDirCommand command, org.apache.avro.ipc.Callback<java.lang.Void> callback) throws java.io.IOException;
+    void makeDir(avro.commands.MakeDirCommand command, org.apache.avro.ipc.Callback<java.lang.String> callback) throws java.io.IOException;
     /**
      * Issue a remove dor command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
@@ -53,12 +53,12 @@ public interface DataNodeRPC {
      * Issue a rename dir command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
      */
-    void renameDir(avro.commands.RenameDirCommand command, org.apache.avro.ipc.Callback<java.lang.Void> callback) throws java.io.IOException;
+    void renameDir(avro.commands.RenameDirCommand command, org.apache.avro.ipc.Callback<java.lang.String> callback) throws java.io.IOException;
     /**
      * Issue a create file command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
      */
-    void createFile(avro.commands.CreateFileCommand command, org.apache.avro.ipc.Callback<java.lang.Void> callback) throws java.io.IOException;
+    void createFile(avro.commands.CreateFileCommand command, org.apache.avro.ipc.Callback<java.lang.String> callback) throws java.io.IOException;
     /**
      * Issue a remove file command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
@@ -68,6 +68,6 @@ public interface DataNodeRPC {
      * Issue a update file command on a remote data node.
      * @throws java.io.IOException The async call could not be completed.
      */
-    void updateFile(avro.commands.UpdateFileCommand command, org.apache.avro.ipc.Callback<java.lang.Void> callback) throws java.io.IOException;
+    void updateFile(avro.commands.UpdateFileCommand command, org.apache.avro.ipc.Callback<java.lang.String> callback) throws java.io.IOException;
   }
 }

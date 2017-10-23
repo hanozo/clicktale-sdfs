@@ -1,5 +1,7 @@
 package processes;
 
+import avro.commands.BareResponse;
+import avro.commands.Curse;
 import mq.rabbit.RabbitRPCServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,14 +62,18 @@ public class CommandDispatcher {
 
                 try {
 
-                    cmdExecutor.execute(cmd);
+                    return BareResponse.newBuilder()
+                            .setSucceeded(true)
+                            .setFeedback(cmdExecutor.execute(cmd).toString())
+                            .build();
 
-                    return cmd; // response
+                } catch (Curse e) {
 
-                } catch (IOException e) {
                     logger.error(e);
-
-                    return cmd; // error
+                    return BareResponse.newBuilder()
+                            .setSucceeded(false)
+                            .setFeedback(e.getMessage$())
+                            .build();
                 }
             });
 

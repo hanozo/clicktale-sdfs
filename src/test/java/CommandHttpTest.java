@@ -30,9 +30,9 @@ public class CommandHttpTest {
 
     @BeforeClass
     public static void setup() {
+        nameNode.bootstrap();
         dataNode1.bootstrap(65112, "Test");
         dataNode2.bootstrap(65113, "Test");
-        nameNode.bootstrap();
         dispatcher.bootstrap();
         server.bootstrap();
     }

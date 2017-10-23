@@ -1,5 +1,6 @@
 package mq;
 
+import avro.commands.BareResponse;
 import org.apache.avro.specific.SpecificRecord;
 
 import java.io.Closeable;
@@ -8,5 +9,5 @@ import java.util.concurrent.CompletableFuture;
 
 public interface MQRPCClient extends Closeable {
 
-    <T extends SpecificRecord> CompletableFuture<T> call(T request) throws IOException, InterruptedException;
+    <T extends SpecificRecord> CompletableFuture<BareResponse> call(T request) throws IOException, InterruptedException;
 }
