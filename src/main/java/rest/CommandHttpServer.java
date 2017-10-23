@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import mq.MQProducer;
+import mq.MQRPCClient;
 import mq.rabbit.RabbitProducer;
+import mq.rabbit.RabbitRPCClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -34,7 +36,7 @@ public class CommandHttpServer {
 
     private static final Logger logger = LogManager.getLogger();
     private static final String BASE_URI;
-    private static final String COMMANDS_QUEUE = "commands";
+    private static final String RPC_COMMANDS_QUEUE = "commands";
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -59,6 +61,7 @@ public class CommandHttpServer {
 
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
+        //noinspection ResultOfMethodCallIgnored
         System.in.read();
 
         server.shutdown();
@@ -74,9 +77,9 @@ public class CommandHttpServer {
 
         executor.execute(() -> {
 
-            try (MQProducer producer = new RabbitProducer("localhost", COMMANDS_QUEUE)) {
+            try (MQRPCClient client = new RabbitRPCClient("localhost")) {
 
-                try (DirDomain dirDomain = new DirDomain(producer); FileDomain fileDomain = new FileDomain(producer)) {
+                try (DirDomain dirDomain = new DirDomain(client); FileDomain fileDomain = new FileDomain(client)) {
                     final HttpServer server = startServer(dirDomain, fileDomain);
 
                     try {

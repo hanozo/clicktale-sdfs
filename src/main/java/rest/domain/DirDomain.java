@@ -1,7 +1,9 @@
 package rest.domain;
 
-import avro.commands.*;
-import mq.MQProducer;
+import avro.commands.MakeDirCommand;
+import avro.commands.RemoveDirCommand;
+import avro.commands.RenameDirCommand;
+import mq.MQRPCClient;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,27 +13,27 @@ import java.io.IOException;
  */
 public class DirDomain implements Closeable {
 
-    private final MQProducer producer;
+    private final MQRPCClient client;
 
-    public DirDomain(MQProducer producer) {
+    public DirDomain(MQRPCClient client) {
 
-        this.producer = producer;
+        this.client = client;
     }
 
-    public void make(final MakeDirCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void make(final MakeDirCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
-    public void remove(final RemoveDirCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void remove(final RemoveDirCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
-    public void rename(final RenameDirCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void rename(final RenameDirCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
     @Override
     public void close() throws IOException {
-        producer.close();
+        client.close();
     }
 }

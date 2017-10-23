@@ -1,10 +1,11 @@
 package processes;
 
-import mq.rabbit.RabbitConsumer;
+import mq.rabbit.RabbitRPCServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,8 +16,8 @@ import java.util.concurrent.TimeoutException;
  */
 public class CommandDispatcher {
 
-    private static final String COMMANDS_QUEUE = "commands";
     private static final Logger logger = LogManager.getLogger();
+    private static final String RMQ_HOST = Optional.ofNullable(System.getenv("RMQ_HOST")).orElse("localhost");
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -28,6 +29,7 @@ public class CommandDispatcher {
         Runtime.getRuntime().addShutdownHook(new Thread(dispatcher::shutdown));
 
         System.out.println("CommandDispatcher started. Hit enter to stop...");
+        //noinspection ResultOfMethodCallIgnored
         System.in.read();
 
         dispatcher.shutdown();
@@ -48,22 +50,24 @@ public class CommandDispatcher {
 
         logger.info("Client built, got proxy.");
 
-        try (RabbitConsumer consumer = new RabbitConsumer("localhost")) {
+        try (RabbitRPCServer server = new RabbitRPCServer(RMQ_HOST)) {
 
-            consumer.subscribe(COMMANDS_QUEUE, cmd -> {
+            CommandExecutor cmdExecutor = new CommandExecutor();
+
+            server.process(cmd -> {
 
                 logger.info(" [x] Received '" + cmd.getSchema().getName() + "'");
 
-                CommandExecutor cmdExecutor;
-
                 try {
-
-                    cmdExecutor = new CommandExecutor();
 
                     cmdExecutor.execute(cmd);
 
+                    return cmd; // response
+
                 } catch (IOException e) {
                     logger.error(e);
+
+                    return cmd; // error
                 }
             });
 
@@ -71,9 +75,7 @@ public class CommandDispatcher {
 
         } catch (TimeoutException | IOException e) {
             logger.error(e);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        } catch (InterruptedException ignore) {
         }
-
     }
 }

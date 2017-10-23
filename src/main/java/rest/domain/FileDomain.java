@@ -1,7 +1,9 @@
 package rest.domain;
 
-import avro.commands.*;
-import mq.MQProducer;
+import avro.commands.CreateFileCommand;
+import avro.commands.RemoveFileCommand;
+import avro.commands.UpdateFileCommand;
+import mq.MQRPCClient;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,27 +13,27 @@ import java.io.IOException;
  */
 public class FileDomain implements Closeable {
 
-    private final MQProducer producer;
+    private final MQRPCClient client;
 
-    public FileDomain(MQProducer producer) {
+    public FileDomain(MQRPCClient client) {
 
-        this.producer = producer;
+        this.client = client;
     }
 
-    public void create(final CreateFileCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void create(final CreateFileCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
-    public void remove(final RemoveFileCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void remove(final RemoveFileCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
-    public void update(final UpdateFileCommand cmd) throws InterruptedException {
-        producer.send(cmd);
+    public void update(final UpdateFileCommand cmd) throws IOException, InterruptedException {
+        client.call(cmd);
     }
 
     @Override
     public void close() throws IOException {
-        producer.close();
+        client.close();
     }
 }

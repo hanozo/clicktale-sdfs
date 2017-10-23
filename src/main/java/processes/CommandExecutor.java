@@ -3,7 +3,6 @@ package processes;
 import avro.commands.*;
 import avro.namenode.DataNodeInfo;
 import avro.namenode.NameNodeRPC;
-import org.apache.avro.AvroRemoteException;
 import org.apache.avro.ipc.NettyTransceiver;
 import org.apache.avro.ipc.specific.SpecificRequestor;
 import org.apache.avro.specific.SpecificRecord;
@@ -20,7 +19,7 @@ import java.util.Optional;
 public class CommandExecutor {
 
     private static final Logger logger = LogManager.getLogger();
-    private String namenodeHost = Optional.ofNullable(System.getenv("NAME_NODE")).orElse(InetAddress.getLocalHost().getHostName());
+    private final String namenodeHost = Optional.ofNullable(System.getenv("NAME_NODE")).orElse(InetAddress.getLocalHost().getHostName());
 
     public CommandExecutor() throws UnknownHostException {
     }
