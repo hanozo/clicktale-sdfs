@@ -16,7 +16,7 @@ class DataNodeServer implements DataNodeRPC {
 
     private static final Logger logger = LogManager.getLogger();
 
-    static final String DATA = Optional.ofNullable(System.getenv("DATA")).orElse("C:\\Data");
+    static final String DATA = Optional.ofNullable(System.getenv("DATA")).orElse("/home/alonhe/sdfs");
     private final Path path;
 
     DataNodeServer(String perNodePath) throws IOException {

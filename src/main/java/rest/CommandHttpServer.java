@@ -24,10 +24,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * Grizzly HTTP server
@@ -51,16 +48,14 @@ public class CommandHttpServer {
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
 
         CommandHttpServer server = new CommandHttpServer();
 
 //        Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
 
-        server.bootstrap();
+        server.bootstrap().get();
 
-        System.out.println(String.format("Jersey app started with WADL available at "
-                + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
         //noinspection ResultOfMethodCallIgnored
         System.in.read();
 
@@ -73,14 +68,22 @@ public class CommandHttpServer {
         executor.shutdown();
     }
 
-    public void bootstrap() {
+    public CompletableFuture<Void> bootstrap() {
+
+        CompletableFuture<Void> started = new CompletableFuture<>();
 
         executor.execute(() -> {
 
             try (MQRPCClient client = new RabbitRPCClient("localhost")) {
 
                 try (DirDomain dirDomain = new DirDomain(client); FileDomain fileDomain = new FileDomain(client)) {
+
                     final HttpServer server = startServer(dirDomain, fileDomain);
+
+                    System.out.println(String.format("Jersey app started with WADL available at "
+                            + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
+
+                    started.complete(null);
 
                     try {
                         latch.await();
@@ -92,8 +95,11 @@ public class CommandHttpServer {
                 }
             } catch (TimeoutException | IOException e) {
                 logger.error(e);
+                started.completeExceptionally(e);
             }
         });
+
+        return started;
 
     }
 

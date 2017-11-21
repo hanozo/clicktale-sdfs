@@ -15,7 +15,7 @@ import sdfs.namenode.NameNode;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 public class CommandHttpTest {
 
@@ -26,15 +26,15 @@ public class CommandHttpTest {
     private final static CommandHttpServer server = new CommandHttpServer();
 
     private final static RandomString randomString = new RandomString();
-    private final static String PATH = "C:\\Data\\Test";
+    private final static String PATH = "/home/alonhe/sdfs/test";
 
     @BeforeClass
-    public static void setup() {
+    public static void setup() throws ExecutionException, InterruptedException {
         nameNode.bootstrap();
-        dataNode1.bootstrap(65112, "Test");
-        dataNode2.bootstrap(65113, "Test");
+        dataNode1.bootstrap(65112, "test");
+        dataNode2.bootstrap(65113, "test");
         dispatcher.bootstrap();
-        server.bootstrap();
+        server.bootstrap().get();
     }
 
     @AfterClass
@@ -46,11 +46,24 @@ public class CommandHttpTest {
     }
 
     @Test
+    public void ruok() {
+
+        Client client = Client.create();
+
+        WebResource webResource = client.resource("http://localhost:8080/sdfs/files");
+
+        ClientResponse response = webResource
+                .get(ClientResponse.class);
+
+        Assert.assertTrue(response.getStatus() == 200);
+        Assert.assertTrue("imok".equalsIgnoreCase(response.getEntity(String.class)));
+
+    }
+
+    @Test
     public void assertFileCreation() throws JsonProcessingException, InterruptedException {
 
         String fileName = createFile();
-
-        TimeUnit.SECONDS.sleep(3);
 
         Assert.assertTrue(Files.exists(Paths.get(PATH, fileName)));
     }
@@ -60,11 +73,7 @@ public class CommandHttpTest {
 
         String fileName = createFile();
 
-        TimeUnit.SECONDS.sleep(3);
-
         delete(fileName);
-
-        TimeUnit.SECONDS.sleep(3);
 
         Assert.assertFalse(Files.exists(Paths.get(PATH, fileName)));
     }
@@ -95,8 +104,6 @@ public class CommandHttpTest {
                 .post(ClientResponse.class, cmd.toString());
 
         Assert.assertTrue(response.getStatus() == 200);
-
-        TimeUnit.SECONDS.sleep(3);
     }
 
     private void delete(String fileName) throws InterruptedException {
@@ -108,7 +115,5 @@ public class CommandHttpTest {
         ClientResponse response = webResource.delete(ClientResponse.class);
 
         Assert.assertTrue(response.getStatus() == 200);
-
-        TimeUnit.SECONDS.sleep(3);
     }
 }

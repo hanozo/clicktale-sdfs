@@ -10,8 +10,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -22,6 +24,7 @@ public class RabbitRPCClient implements MQRPCClient {
     private static final Logger logger = LogManager.getLogger();
     private static final String RPC_COMMANDS_QUEUE = "commands";
     private final String replyQueueName;
+    private static Map<String, CompletableFuture<BareResponse>> map = new ConcurrentHashMap<>();
 
     private final AvroJsonEncoder encoder = new AvroJsonEncoder();
     private final AvroJsonDecoder decoder = new AvroJsonDecoder();
@@ -36,6 +39,22 @@ public class RabbitRPCClient implements MQRPCClient {
         connection = factory.newConnection();
         channel = connection.createChannel();
         replyQueueName = channel.queueDeclare().getQueue();
+
+        channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+                CompletableFuture<BareResponse> future = map.remove(properties.getCorrelationId());
+
+                if (future != null) {
+                    BareResponse response = decoder.deserialize(BareResponse.class, body);
+                    if (response.getSucceeded())
+                        future.complete(response);
+                    else
+                        future.completeExceptionally(new Exception(response.getFeedback()));
+                }
+            }
+        });
     }
 
     public <T extends SpecificRecord> CompletableFuture<BareResponse> call(T request) throws IOException, InterruptedException {
@@ -50,20 +69,9 @@ public class RabbitRPCClient implements MQRPCClient {
 
         channel.basicPublish("", RPC_COMMANDS_QUEUE, props, encoder.serialize(request));
 
-        final CompletableFuture<BareResponse> future = new CompletableFuture<>();
+        CompletableFuture<BareResponse> future = new CompletableFuture<>();
 
-        channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                if (properties.getCorrelationId().equals(corrId)) {
-                    BareResponse response = decoder.deserialize(BareResponse.class, body);
-                    if (response.getSucceeded())
-                        future.complete(response);
-                    else
-                        future.completeExceptionally(new Exception(response.getFeedback()));
-                }
-            }
-        });
+        map.put(corrId, future);
 
         return future;
     }
